@@ -74,24 +74,9 @@ int main() {
 
         printf("Connection accepted\n");
 
-        int should_close = 0;
-        while (!should_close) {
-            memset(buffer, 0, BUFFER_SIZE);
-            valread = read(new_socket, buffer, BUFFER_SIZE);
-            if (valread == 0) {
-                printf("Connection closed\n");
-                break;
-            }
-            printf("Received: %s\n", buffer);
+        printf("Sending RST and closing connection\n");
+        set_rst(new_socket);
 
-            if (strncmp(buffer, "\\test", 5) == 0) {
-                printf("Received \\test, sending RST and closing connection\n");
-                set_rst(new_socket);
-                should_close = 1;
-            } else {
-                send(new_socket, buffer, strlen(buffer), 0);
-            }
-        }
         close(new_socket);
     }
 

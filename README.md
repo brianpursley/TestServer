@@ -2,6 +2,8 @@
 
 This is a TCP server to help with troubleshooting `kubectl port-forward` handling of "connection reset by peer".
 
+It instantly sends an RST packet upon accepting a connection.
+
 ## Usage
 
 Create a pod running the test server:
@@ -18,8 +20,6 @@ Use `nc` to connect to the server:
 ```shell
 nc localhost 5000
 ```
-
-The server will function as an echo server, except if you send `\test`, which will trigger it to send an `RST` packet.
 
 kubectl port-forward cannot handle RST packets, causing the port forwarding session to terminate, even though the server is still running and able to processing additional connections.
 ```shell
